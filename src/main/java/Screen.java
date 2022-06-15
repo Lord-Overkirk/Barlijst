@@ -4,6 +4,8 @@ import com.google.gson.GsonBuilder;
 import org.json.JSONObject;
 
 import javax.swing.*;
+import javax.swing.table.TableRowSorter;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,13 +23,18 @@ public class Screen {
     JButton increaseThirtyButton;
     JButton decreaseButton;
     JButton saveButton;
+
     JPanel namePanel;
     JPanel buttonPanel;
+
     JTextField firstName;
     JTextField lastName;
     JTextField plusVal;
     JTextField minVal;
+
     JTable table;
+    BarTableModel barTableModel;
+    TableRowSorter<BarTableModel> sorter;
 
     Screen() {
         this.jFrame = new JFrame();
@@ -60,10 +67,19 @@ public class Screen {
 
         Object[] columnNames = { "User id", "First name", "Last name", "Balance", "Selected" };
 
-        BarTableModel barTableModel = new BarTableModel(null, columnNames);
+        barTableModel = new BarTableModel(null, columnNames);
         barTableModel.addTableModelListener(new CheckListener());
         this.table = new JTable(barTableModel);
         this.table.setBounds(300, 40, 200, 300);
+
+        sorter = new TableRowSorter<BarTableModel>(barTableModel);
+        this.table.setRowSorter(sorter);
+
+        ArrayList <RowSorter.SortKey> sortKeys = new ArrayList<RowSorter.SortKey>(25);
+        sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+        sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
+        sorter.setSortKeys(sortKeys);
+
         JScrollPane scrollPane = new JScrollPane(this.table);
         refreshTable();
 
@@ -162,10 +178,12 @@ public class Screen {
 
     private void refreshTable() {
         //update table visually
-        BarTableModel barTableModel = (BarTableModel) this.table.getModel();
+        // BarTableModel barTableModel = (BarTableModel) this.table.getModel();
         Object[] columnNames = { "User id", "First name", "Last name", "Balance", "Selected" };
         Object[][] res = getCustomersObjectArray(BarLijst.customers);
-        barTableModel.setDataVector(res, columnNames);
+        this.barTableModel.setDataVector(res, columnNames);
+
+        this.sorter.sort();
     }
 
     private Object[][] getCustomersObjectArray(ArrayList<Customer> customers) {
