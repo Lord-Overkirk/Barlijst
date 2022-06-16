@@ -3,14 +3,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.swing.*;
 import javax.swing.RowSorter.SortKey;
 import javax.swing.table.TableRowSorter;
+import org.jdesktop.swingx.JXTextField;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +24,8 @@ public class Screen {
     JPanel namePanel;
     JPanel buttonPanel;
 
-    JTextField firstName;
-    JTextField lastName;
+    JXTextField firstName;
+    JXTextField lastName;
     JTextField nVal;
     JButton nButton;
 
@@ -37,20 +36,22 @@ public class Screen {
     Screen() {
         this.jFrame = new JFrame();
         this.jFrame.setLayout(new BorderLayout());
-        this.jFrame.setSize(400, 500);
+        this.jFrame.setSize(1250, 800);
+        this.jFrame.setLocationRelativeTo(null);
 
-        // System.out.println(new BarLijstMenu());
         this.jFrame.setJMenuBar(BarLijstMenu.BuildBarLijstMenu());
 
         this.namePanel = new JPanel(new BorderLayout());
         this.buttonPanel = new JPanel(new GridLayout(5, 0));
 
-        firstName = new JTextField();
+        firstName = new JXTextField();
         this.firstName.setPreferredSize(new Dimension(200, 20));
+        this.firstName.setPrompt("First name");
         this.namePanel.add(firstName, BorderLayout.LINE_START);
 
-        lastName = new JTextField();
+        lastName = new JXTextField();
         this.lastName.setPreferredSize(new Dimension(200, 20));
+        this.lastName.setPrompt("Last name");
         this.namePanel.add(lastName, BorderLayout.CENTER);
 
         this.addButton();
@@ -71,7 +72,7 @@ public class Screen {
         barTableModel = new BarTableModel(null, columnNames);
         barTableModel.addTableModelListener(new CheckListener());
         this.table = new JTable(barTableModel);
-        this.table.setBounds(300, 40, 200, 300);
+        this.table.setBounds(600, 300, 2000, 300);
         table.setFont(new Font("Arial", Font.PLAIN, 20));
         table.setRowHeight(table.getRowHeight()+5);
 
