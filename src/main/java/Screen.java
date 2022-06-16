@@ -1,7 +1,4 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import org.json.JSONObject;
 
 import javax.swing.*;
 import javax.swing.RowSorter.SortKey;
@@ -31,7 +28,7 @@ public class Screen {
 
     JTextField firstName;
     JTextField lastName;
-    JTextField plusVal;
+    JTextField nVal;
     JTextField minVal;
 
     JTable table;
@@ -59,9 +56,9 @@ public class Screen {
         this.addIncreaseThirtyButton();
         this.addDecreaseButton();
 
-        this.plusVal = new JTextField();
+        this.nVal = new JTextField();
         this.minVal = new JTextField();
-        this.buttonPanel.add(plusVal);
+        this.buttonPanel.add(nVal);
         this.buttonPanel.add(minVal);
 
         this.jFrame.add(buttonPanel, BorderLayout.LINE_START);
@@ -73,6 +70,8 @@ public class Screen {
         barTableModel.addTableModelListener(new CheckListener());
         this.table = new JTable(barTableModel);
         this.table.setBounds(300, 40, 200, 300);
+        table.setFont(new Font("Arial", Font.PLAIN, 20));
+        table.setRowHeight(table.getRowHeight()+5);
 
         sorter = new TableRowSorter<BarTableModel>(barTableModel);
         this.table.setRowSorter(sorter);
