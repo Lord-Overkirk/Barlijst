@@ -179,11 +179,11 @@ public class Screen {
     private void refreshTable() {
         //update table visually
         // BarTableModel barTableModel = (BarTableModel) this.table.getModel();
-        Object[] columnNames = { "User id", "First name", "Last name", "Balance", "Selected" };
-        Object[][] res = getCustomersObjectArray(BarLijst.customers);
-        this.barTableModel.setDataVector(res, columnNames);
-
-        this.sorter.sort();
+        // Object[] columnNames = { "User id", "First name", "Last name", "Balance", "Selected" };
+        // Object[][] res = getCustomersObjectArray(BarLijst.customers);
+        // this.barTableModel.setDataVector(res, columnNames);
+        this.table.setModel(this.barTableModel);
+        // this.table.fireTableDataChanged();
     }
 
     private Object[][] getCustomersObjectArray(ArrayList<Customer> customers) {
