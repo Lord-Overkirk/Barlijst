@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder;
 import org.json.JSONObject;
 
 import javax.swing.*;
+import javax.swing.RowSorter.SortKey;
 import javax.swing.table.TableRowSorter;
 
 import java.awt.*;
@@ -14,6 +15,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Screen {
@@ -176,16 +178,26 @@ public class Screen {
         refreshTable();
     }
 
+    /**
+     * Update the tableModel display. The old sorting is preserved during this routine.
+     */
     private void refreshTable() {
         //update table visually
-        // BarTableModel barTableModel = (BarTableModel) this.table.getModel();
-        // Object[] columnNames = { "User id", "First name", "Last name", "Balance", "Selected" };
-        // Object[][] res = getCustomersObjectArray(BarLijst.customers);
-        // this.barTableModel.setDataVector(res, columnNames);
-        this.table.setModel(this.barTableModel);
-        // this.table.fireTableDataChanged();
+        List<? extends SortKey> old_sort_keys = table.getRowSorter().getSortKeys();
+
+        Object[] columnNames = { "User id", "First name", "Last name", "Balance", "Selected" };
+        Object[][] res = getCustomersObjectArray(BarLijst.customers);
+        this.barTableModel.setDataVector(res, columnNames);
+
+        // Preserve the old sorting of the displayed tableModel.
+        table.getRowSorter().setSortKeys(old_sort_keys);
     }
 
+    /**
+     * Read the data from main memory. This is needed to update the displayed table.
+     * @param customers, the list of customers currently in memory.
+     * @return, the Object array that needs to be loaded into the table.
+     */
     private Object[][] getCustomersObjectArray(ArrayList<Customer> customers) {
         Object[][] result = new Object[customers.size()][5];
         for (int i = 0; i < customers.size(); i++) {
