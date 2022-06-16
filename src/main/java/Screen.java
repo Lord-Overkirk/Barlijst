@@ -21,7 +21,6 @@ public class Screen {
     JButton increaseButton;
     JButton increaseThirtyButton;
     JButton decreaseButton;
-    JButton saveButton;
 
     JPanel namePanel;
     JPanel buttonPanel;
@@ -29,7 +28,7 @@ public class Screen {
     JTextField firstName;
     JTextField lastName;
     JTextField nVal;
-    JTextField minVal;
+    JButton nButton;
 
     JTable table;
     BarTableModel barTableModel;
@@ -39,6 +38,10 @@ public class Screen {
         this.jFrame = new JFrame();
         this.jFrame.setLayout(new BorderLayout());
         this.jFrame.setSize(400, 500);
+
+        // System.out.println(new BarLijstMenu());
+        this.jFrame.setJMenuBar(BarLijstMenu.BuildBarLijstMenu());
+
         this.namePanel = new JPanel(new BorderLayout());
         this.buttonPanel = new JPanel(new GridLayout(5, 0));
 
@@ -51,15 +54,14 @@ public class Screen {
         this.namePanel.add(lastName, BorderLayout.CENTER);
 
         this.addButton();
-        this.addSaveButton();
         this.addIncreaseButton();
         this.addIncreaseThirtyButton();
         this.addDecreaseButton();
 
         this.nVal = new JTextField();
-        this.minVal = new JTextField();
+        this.nButton = new JButton();
         this.buttonPanel.add(nVal);
-        this.buttonPanel.add(minVal);
+        this.addNButton();
 
         this.jFrame.add(buttonPanel, BorderLayout.LINE_START);
         this.jFrame.add(namePanel, BorderLayout.PAGE_START);
@@ -90,20 +92,12 @@ public class Screen {
         this.jFrame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 System.out.println("Saving...");
-                shutdownHook();
+                BarLijstMenu.shutdownHook();
                 System.out.println("Closing 'Barlijst'");
                 System.exit(0);
             }
         });
         this.jFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-    }
-
-    public void addSaveButton() {
-        this.saveButton = new JButton("Save");
-
-        this.saveButton.addActionListener(e -> shutdownHook());
-
-        this.buttonPanel.add(this.saveButton);
     }
 
     public void addButton() {
@@ -158,6 +152,26 @@ public class Screen {
         this.jFrame.add(this.increaseThirtyButton, BorderLayout.LINE_END);
     }
 
+    public void addNButton() {
+        this.nButton = new JButton("N");
+
+        this.nButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int readVal = 0;
+                System.out.println(Screen.this.nVal.getText());
+                if (!Screen.this.nVal.getText().equals("")) {
+                    readVal = Integer.parseInt(Screen.this.nVal.getText());
+                }
+
+                final int incrVal = readVal;
+                    increaseButtonPressed(incrVal);
+            }
+        });
+
+        this.buttonPanel.add(this.nButton);
+    }
+
     private void addButtonPressed() {
         Customer new_customer = new Customer(firstName.getText(), lastName.getText());
         BarLijst.customers.add(new_customer);
@@ -207,15 +221,5 @@ public class Screen {
             result[i][4] = customers.get(i).isSelected();
         }
         return result;
-    }
-
-    private void shutdownHook() {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            // Writing to a file
-            mapper.writeValue(new File("list.json"), BarLijst.customers);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
