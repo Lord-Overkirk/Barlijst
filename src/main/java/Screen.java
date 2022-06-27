@@ -1,8 +1,5 @@
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import javax.swing.*;
 import javax.swing.RowSorter.SortKey;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 import org.jdesktop.swingx.JXTextField;
