@@ -39,7 +39,6 @@ public class Screen {
 
         this.namePanel = new JPanel(new BorderLayout());
         this.buttonPanel = new JPanel(new GridLayout(5, 0));
-
         firstName = new JXTextField();
         this.firstName.setPreferredSize(new Dimension(200, 20));
         this.firstName.setPrompt("First name");

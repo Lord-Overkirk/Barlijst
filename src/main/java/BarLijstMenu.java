@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -7,7 +8,9 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JRootPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,12 +41,12 @@ public class BarLijstMenu extends JMenuBar {
     }
 
     private JButton addIncreaseButton() {
-        JButton increaseButton = new JButton("+1");
+        JButton increaseButton = new JButton("Bier/Radler");
 
         increaseButton.addActionListener(new ActionListener() {            
             @Override
             public void actionPerformed(ActionEvent e) {
-                BarLijstMenu.this.screen.increaseButtonPressed(1);
+                BarLijstMenu.this.screen.increaseButtonPressed(-2);
             }
         });
 
@@ -52,7 +55,7 @@ public class BarLijstMenu extends JMenuBar {
 
 
     public JButton addDecreaseButton() {
-        JButton decreaseButton = new JButton("-1");
+        JButton decreaseButton = new JButton("Fris");
 
         decreaseButton.addActionListener(new ActionListener() {
             @Override
@@ -65,7 +68,11 @@ public class BarLijstMenu extends JMenuBar {
     }
 
     public JButton addIncreaseThirtyButton() {
-        JButton increaseThirtyButton = new JButton("+30");
+        JButton increaseThirtyButton = new JButton("Nieuwe barkaart");
+        increaseThirtyButton.setBackground(Color.GREEN);
+        increaseThirtyButton.setContentAreaFilled(false);
+        increaseThirtyButton.setOpaque(true);
+        // increaseThirtyButton.setBorderPainted(false);
 
         increaseThirtyButton.addActionListener(new ActionListener() {
             @Override
