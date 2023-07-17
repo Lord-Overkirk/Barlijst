@@ -1,7 +1,6 @@
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import javax.swing.*;
 import javax.swing.RowSorter.SortKey;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 import org.jdesktop.swingx.JXTextField;
 
@@ -40,11 +39,10 @@ public class Screen {
         this.jFrame.setSize(1250, 800);
         this.jFrame.setLocationRelativeTo(null);
 
-        this.jFrame.setJMenuBar(BarLijstMenu.BuildBarLijstMenu());
+        this.jFrame.setJMenuBar(new BarLijstMenu(this).jMenuBar);
 
         this.namePanel = new JPanel(new BorderLayout());
         this.buttonPanel = new JPanel(new GridLayout(5, 0));
-
         firstName = new JXTextField();
         this.firstName.setPreferredSize(new Dimension(200, 20));
         this.firstName.setPrompt("First name");
@@ -74,7 +72,31 @@ public class Screen {
 
         barTableModel = new BarTableModel(null, columnNames);
         barTableModel.addTableModelListener(new CheckListener());
-        this.table = new JTable(barTableModel);
+        this.table = new JTable(barTableModel) {
+            @Override
+            public Component prepareRenderer(TableCellRenderer renderer, int row, int col) {
+                Component c = super.prepareRenderer(renderer, row, col);
+                if (col == 3) {
+                    Integer intValue = (Integer) getValueAt(row, col);
+                    c.setForeground(getColor(intValue));
+                } else {
+                    c.setForeground(getForeground());
+                }
+                return c;
+            }
+
+            private Color getColor(int intValue) {
+                Color color = null;
+                if (intValue > 0) {
+                    color = Color.GREEN;
+                } else if (intValue < 0) {
+                    color = Color.RED;
+                } else {
+                    color = getForeground();
+                }
+                return color;
+            }
+        };
         this.table.setBounds(600, 300, 2000, 300);
         table.setFont(new Font("Arial", Font.PLAIN, 20));
         table.setRowHeight(table.getRowHeight()+5);
@@ -203,7 +225,7 @@ public class Screen {
         tableModel.addRow(new_names);
     }
 
-    private void increaseButtonPressed(int incrVal) {
+    public void increaseButtonPressed(int incrVal) {
         System.out.println("Selected is:" + BarLijst.selectedCustomers);
         for (Customer selected : BarLijst.selectedCustomers) {
             int current = selected.getBalance();

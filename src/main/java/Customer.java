@@ -8,7 +8,7 @@ public class Customer {
     private int uid;
     private boolean selected;
 
-    static int uid_gen = 0;
+    static int uid_gen = getMaxUid();
 
 //    public Customer() {}
 
@@ -30,9 +30,9 @@ public class Customer {
         this.firstName = firstName;
         this.lastName = lastName;
         this.balance = 0;
+        uid_gen = getMaxUid() + 1;
         this.uid = uid_gen;
         this.selected = false;
-        uid_gen++;
     }
 
     public String getFirstName() {
@@ -61,5 +61,16 @@ public class Customer {
 
     public void select(boolean select) {
         this.selected = select;
+    }
+
+    private static int getMaxUid() {
+        int uid = 0;
+        for (Customer customer: BarLijst.customers) {
+            if (customer.getUid() > uid) {
+                uid = customer.getUid();
+            }
+        }
+        System.out.println("Max id: " + uid);
+        return uid;
     }
 }
