@@ -17,6 +17,7 @@ import java.util.List;
 public class Screen {
     JFrame jFrame;
     JButton plusButton;
+    JButton beerButton;
     JButton increaseButton;
     JButton increaseThirtyButton;
     JButton decreaseButton;
@@ -26,7 +27,7 @@ public class Screen {
 
     JXTextField firstName;
     JXTextField lastName;
-    JTextField nVal;
+    JXTextField nVal;
     JButton nButton;
 
     JTable table;
@@ -56,10 +57,12 @@ public class Screen {
 
         this.addButton();
         this.addIncreaseButton();
+        this.addBeerButton();
         this.addIncreaseThirtyButton();
         this.addDecreaseButton();
 
-        this.nVal = new JTextField();
+        this.nVal = new JXTextField();
+        this.nVal.setPrompt("Vul hier een nummer in...");
         this.nButton = new JButton();
         this.buttonPanel.add(nVal);
         this.addNButton();
@@ -114,6 +117,19 @@ public class Screen {
         this.namePanel.add(this.plusButton, BorderLayout.LINE_END);
     }
 
+    public void addBeerButton() {
+        this.beerButton = new JButton("Bier/Radler/Sterk (-2)");
+
+        this.beerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                increaseButtonPressed(-2);
+            }
+        });
+
+        this.buttonPanel.add(this.beerButton);
+    }
+
     public void addIncreaseButton() {
         this.increaseButton = new JButton("+1");
 
@@ -128,7 +144,7 @@ public class Screen {
     }
 
     public void addDecreaseButton() {
-        this.decreaseButton = new JButton("-1");
+        this.decreaseButton = new JButton("Fris (-1)");
 
         this.decreaseButton.addActionListener(new ActionListener() {
             @Override
@@ -141,7 +157,7 @@ public class Screen {
     }
 
     public void addIncreaseThirtyButton() {
-        this.increaseThirtyButton = new JButton("+30");
+        this.increaseThirtyButton = new JButton("Nieuwe barkaart (+30)");
 
         this.increaseThirtyButton.addActionListener(new ActionListener() {
             @Override
@@ -162,7 +178,12 @@ public class Screen {
                 int readVal = 0;
                 System.out.println(Screen.this.nVal.getText());
                 if (!Screen.this.nVal.getText().equals("")) {
-                    readVal = Integer.parseInt(Screen.this.nVal.getText());
+                    try {
+                        readVal = Integer.parseInt(Screen.this.nVal.getText());
+                    } catch (NumberFormatException err) {
+                        String message = "Je kunt slechts hele getallen invoeren!";
+                        JOptionPane.showMessageDialog(new JFrame(), message, "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
 
                 final int incrVal = readVal;
